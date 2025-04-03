@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Dark theme colors (default) */
+    --bg-primary: #0F1C2D;
+    --bg-secondary: #1A2B3D;
+    --text-primary: #FFFFFF;
+    --text-secondary: #E5E7EB;
+    --accent: #FFD700;
+  }
+
+  .light-mode {
+    /* Light theme colors */
+    --bg-primary: #FFFFFF;
+    --bg-secondary: #F3F4F6;
+    --text-primary: #1F2937;
+    --text-secondary: #4B5563;
+  }
+}
+
+@layer components {
+  .bg-theme-primary {
+    @apply bg-[#0F1C2D] light-mode:bg-white;
+  }
+
+  .bg-theme-secondary {
+    @apply bg-[#1A2B3D] light-mode:bg-gray-50;
+  }
+
+  .text-theme-primary {
+    @apply text-white light-mode:text-gray-900;
+  }
+
+  .text-theme-secondary {
+    @apply text-gray-300 light-mode:text-gray-600;
+  }
+
+  .theme-transition {
+    @apply transition-colors duration-200;
+  }
+
+  .card-theme {
+    @apply bg-[#1A2B3D] light-mode:bg-white border border-[#FFD700]/10 light-mode:border-gray-200;
+  }
+} 
