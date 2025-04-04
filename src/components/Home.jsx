@@ -1,14 +1,14 @@
 import React from 'react';
 import Hero from './Hero';
-import About from './About';
+import Method from './Method';
 import Destinations from './Destinations';
 import Contact from './Contact';
 
 const Home = () => {
   return (
     <>
-      <Hero />
-      <About />
+      <Hero />    
+      <Method />
       <Destinations />
       <Contact />
     </>

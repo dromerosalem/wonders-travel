@@ -2,6 +2,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaStar, FaClock } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { BASE_URL } from '../config/constants';
 
 const TripHighlight = ({ icon: Icon, label }) => (
   <div className="flex items-center gap-1.5">
@@ -96,7 +97,7 @@ const PastTrips = () => {
       date: 'September 21-28, 2024',
       location: 'Munich, Germany',
       website: 'https://wonders.travel/oktoberfest-2024',
-      image: '/images/oktoberfest.jpg',
+      image: `${BASE_URL}/images/oktoberfest.jpg`,
       duration: '7 Days',
       groupSize: '20 People',
       rating: '4.9/5.0',
@@ -109,7 +110,7 @@ const PastTrips = () => {
       location: 'Sahara Desert, Morocco',
       website: 'https://morocco.wonders.travel/',
       video: 'https://youtu.be/WHEYeKasvEM',
-      image: '/images/morocco.jpg',
+      image: `${BASE_URL}/images/morocco.jpg`,
       duration: '8 Days',
       groupSize: '15 People',
       rating: '4.8/5.0',
@@ -122,7 +123,7 @@ const PastTrips = () => {
       location: 'Havana, Cuba',
       website: 'https://wonders.travel/cuba-2022',
       video: 'https://youtu.be/4QsseYevX3k',
-      image: '/images/cuba.jpg',
+      image: `${BASE_URL}/images/cuba.jpg`,
       duration: '8 Days',
       groupSize: '18 People',
       rating: '4.9/5.0',

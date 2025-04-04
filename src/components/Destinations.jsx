@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaClock, FaGlobe } from 'react-icons/fa';
+import { BASE_URL } from '../config/constants';
 
 const CountdownTimer = ({ targetDate }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
@@ -151,7 +152,7 @@ const Destinations = () => {
             title="MOROCCO 2025"
             subtitle="BACK TO THE ORIGINS (Vol. 2): Discovering the Sahara Desert"
             date="2025-05-17"
-            image="/images/morocco.jpg"
+            image={`${BASE_URL}/images/morocco.jpg`}
             status="APPLICATIONS STARTING SOON!"
             link="https://morocco2025.wonders.travel/"
             duration="10 Days"
@@ -162,7 +163,7 @@ const Destinations = () => {
             title="EGYPT 2025"
             subtitle="JOURNEY TO THE ANCIENTS: Unveiling the Mysteries of the Nile"
             date="2025-12-05"
-            image="/images/egypt.jpg"
+            image={`${BASE_URL}/images/egypt.jpg`}
             status="STAY TUNED!"
             link="https://egypt.wonders.travel/"
             duration="12 Days"

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes, FaArrowRight } from 'react-icons/fa';
+import { BASE_URL } from '../config/constants';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,7 +14,7 @@ const Navbar = () => {
   const menuItems = [
     { path: '/', label: 'Home', type: 'page' },
     { path: '#destinations', label: 'Destinations', type: 'section' },
-    { path: '#about', label: 'About', type: 'section' },
+    { path: '/about', label: 'About', type: 'page' },
     { path: '/past-trips', label: 'Past Trips', type: 'page' },
     { path: '/faq', label: 'FAQ', type: 'page' },
     { path: '#contact', label: 'Contact', type: 'section' },
@@ -123,7 +124,7 @@ const Navbar = () => {
                 <div className="flex justify-between items-center p-6 border-b border-[#FFD700]/10">
                   <Link to="/" className="flex items-center space-x-2">
                     <img 
-                      src="/images/wt-logo.png" 
+                      src={`${BASE_URL}/images/wt-logo.png`}
                       alt="Wonders.Travel Logo" 
                       className="h-12 w-auto"
                     />
@@ -175,7 +176,7 @@ const Navbar = () => {
             {/* Logo */}
             <Link to="/" className="flex items-center space-x-2">
               <img 
-                src="/images/wt-logo.png" 
+                src={`${BASE_URL}/images/wt-logo.png`}
                 alt="Wonders.Travel Logo" 
                 className="h-12 w-auto"
               />

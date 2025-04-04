@@ -1,4 +1,5 @@
 import React from 'react';
+import { BASE_URL } from '../config/constants';
 
 const Hero = () => {
   return (
@@ -6,7 +7,7 @@ const Hero = () => {
       {/* Background Image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: 'url(/images/hero-bg.png)' }}
+        style={{ backgroundImage: `url(${BASE_URL}/images/hero-bg.png)` }}
       >
         <div className="absolute inset-0 bg-[#0F1C2D]/50"></div>
       </div>
@@ -15,7 +16,7 @@ const Hero = () => {
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
         <div className="w-64 sm:w-80 mx-auto mb-12">
           <img
-            src="/images/logo.png"
+            src={`${BASE_URL}/images/logo.png`}
             alt="Wonders.Travel - Your gateway to extraordinary destinations"
             className="w-full h-auto"
           />
