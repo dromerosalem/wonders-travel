@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BASE_URL } from '../config/constants';
 import { useTheme } from '../context/ThemeContext';
+import { FaArrowRight } from 'react-icons/fa';
 
 const Hero = () => {
   const { isDarkMode } = useTheme();
@@ -18,6 +19,20 @@ const Hero = () => {
       new Promise(resolve => lightImage.onload = resolve)
     ]).then(() => setBgLoaded(true));
   }, []);
+
+  const scrollToMethod = () => {
+    const methodSection = document.getElementById('method');
+    if (methodSection) {
+      const headerOffset = 80; // Adjust this value based on your header height
+      const elementPosition = methodSection.getBoundingClientRect().top;
+      const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -105,16 +120,13 @@ const Hero = () => {
           Travel the Wonders of the World with a pre-selected like-minded small group of people just like you
         </p>
 
-        <button 
-          className={`
-            px-8 py-3 text-lg rounded-full font-medium 
-            transform transition-all duration-300 
-            hover:scale-105 hover:shadow-lg active:scale-95
+        <button
+          onClick={scrollToMethod}
+          className={`px-8 py-3 rounded-lg font-medium text-lg transition-all duration-300 
             ${isDarkMode 
-              ? 'bg-[#F7C948] text-[#0F1C2D] hover:bg-[#F7C948]/90' 
-              : 'bg-white text-[#0F1C2D] hover:bg-white/90'
-            }
-          `}
+              ? 'bg-[#FFD700] text-[#0F1C2D] hover:bg-[#FFD700]/90' 
+              : 'bg-[#FFD700] text-[#0F1C2D] hover:bg-[#FFD700]/90'
+            } hover:shadow-lg`}
         >
           Get Started
         </button>

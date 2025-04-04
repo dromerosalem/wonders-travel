@@ -147,7 +147,7 @@ const Destinations = () => {
   const { isDarkMode } = useTheme();
   
   return (
-    <section className={`py-20 ${isDarkMode ? 'bg-[#0F1C2D]' : 'bg-gray-50'} transition-colors duration-300`} id="destinations">
+    <section id="destinations" className={`py-20 ${isDarkMode ? 'bg-[#0F1C2D]' : 'bg-gray-50'} transition-colors duration-300`}>
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
