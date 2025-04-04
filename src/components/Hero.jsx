@@ -91,42 +91,36 @@ const Hero = () => {
       </div>
 
       {/* Content with enhanced transitions */}
-      <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
-        <div 
-          className={`w-64 sm:w-80 mx-auto mb-12 transition-all duration-[1200ms] ${
-            isDarkMode ? 'opacity-100' : 'opacity-90'
-          }`}
-        >
-          <img
+      <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+        <div className="mb-8">
+          <img 
             src={`${BASE_URL}/images/logo.png`}
-            alt="Wonders.Travel - Your gateway to extraordinary destinations"
-            className="w-full h-auto"
+            alt="Wonders.Travel Logo"
+            className="w-72 h-72 mx-auto"
           />
         </div>
-        
-        <h1 
-          className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wide mb-6 transition-all duration-[1200ms] ${
-            isDarkMode ? 'text-[#FFF8E7]' : 'text-white'
-          }`}
-        >
-          Adventures that tie bonds for life
+
+        <h1 className={`text-5xl md:text-7xl font-bold mb-6 ${
+          isDarkMode
+            ? 'text-white'
+            : 'text-[#0F1C2D]'
+        } transition-colors duration-300`}>
+          Adventures that tie<br />bonds for life
         </h1>
         
-        <p 
-          className={`text-lg sm:text-xl mb-12 max-w-2xl mx-auto transition-all duration-[1200ms] ${
-            isDarkMode ? 'text-[#FFF8E7]/90' : 'text-white/90'
-          }`}
-        >
-          Travel the Wonders of the World with a pre-selected like-minded small group of people just like you
+        <p className={`text-xl md:text-2xl mb-8 ${
+          isDarkMode
+            ? 'text-gray-200'
+            : 'text-[#1A2B3D]'
+        } transition-colors duration-300`}>
+          Travel the Wonders of the World with a pre-selected like-minded<br />
+          small group of people just like you
         </p>
 
         <button
           onClick={scrollToMethod}
-          className={`px-8 py-3 rounded-lg font-medium text-lg transition-all duration-300 
-            ${isDarkMode 
-              ? 'bg-[#FFD700] text-[#0F1C2D] hover:bg-[#FFD700]/90' 
-              : 'bg-[#FFD700] text-[#0F1C2D] hover:bg-[#FFD700]/90'
-            } hover:shadow-lg`}
+          className="bg-[#FFD700] text-[#0F1C2D] px-8 py-3 rounded-lg font-medium 
+            transition-all duration-300 hover:bg-[#FFD700]/90 hover:shadow-lg"
         >
           Get Started
         </button>
