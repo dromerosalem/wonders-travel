@@ -82,12 +82,12 @@ const TripCard = ({ title, subtitle, date, image, status, link, duration, groupS
         isDarkMode 
           ? 'bg-gradient-to-br from-[#1A2B3D] to-[#0F1C2D]' 
           : 'bg-white'
-      } rounded-lg overflow-hidden shadow-xl max-w-4xl mx-auto border ${
+      } rounded-lg overflow-hidden shadow-xl border ${
         isDarkMode ? 'border-[#FFD700]/10' : 'border-gray-200 hover:border-[#FFD700]/50'
-      } transition-all duration-300 hover:shadow-2xl`}
+      } transition-all duration-300 hover:shadow-2xl h-full`}
     >
-      <div className="grid md:grid-cols-2 gap-0">
-        <div className="relative group overflow-hidden">
+      <div className="flex flex-col h-full">
+        <div className="relative aspect-[16/9] overflow-hidden">
           <img 
             src={image} 
             alt={`${title} - ${subtitle}`}
@@ -99,38 +99,38 @@ const TripCard = ({ title, subtitle, date, image, status, link, duration, groupS
           </div>
         </div>
 
-        <div className="p-8">
-          <div className="space-y-4">
-            <div className="flex flex-wrap gap-4 mb-6">
-              <TripHighlight icon={FaMapMarkerAlt} label={location} isDarkMode={isDarkMode} />
-              <TripHighlight icon={FaClock} label={duration} isDarkMode={isDarkMode} />
-              <TripHighlight icon={FaUsers} label={groupSize} isDarkMode={isDarkMode} />
-            </div>
+        <div className="p-6 flex flex-col flex-grow">
+          <div className="flex flex-wrap gap-4 mb-4">
+            <TripHighlight icon={FaMapMarkerAlt} label={location} />
+            <TripHighlight icon={FaClock} label={duration} />
+            <TripHighlight icon={FaUsers} label={groupSize} />
+          </div>
 
-            <h2 className={`text-4xl font-bold ${isDarkMode ? 'text-[#FFD700]' : 'text-[#0F1C2D]'}`}>{title}</h2>
-            <h3 className={`text-xl leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              {subtitle}
-            </h3>
+          <h2 className={`text-3xl font-bold ${isDarkMode ? 'text-[#FFD700]' : 'text-[#0F1C2D]'} mb-2`}>
+            {title}
+          </h2>
+          <h3 className={`text-lg leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'} mb-4`}>
+            {subtitle}
+          </h3>
+          
+          <div className={`flex items-center gap-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'} mb-6`}>
+            <FaCalendarAlt className="text-[#FFD700]" />
+            <span>{new Date(date).toLocaleDateString('en-US', { 
+              month: 'long',
+              day: 'numeric',
+              year: 'numeric'
+            })}</span>
+          </div>
+
+          <div className="mt-auto">
+            <CountdownTimer targetDate={date} />
             
-            <div className={`flex items-center gap-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600 font-medium'}`}>
-              <FaCalendarAlt className="text-[#FFD700]" />
-              <span>{new Date(date).toLocaleDateString('en-US', { 
-                month: 'long',
-                day: 'numeric',
-                year: 'numeric'
-              })}</span>
-            </div>
-
-            <div className="py-6">
-              <CountdownTimer targetDate={date} />
-            </div>
-
-            <div className="flex justify-center">
+            <div className="mt-6">
               <a
                 href={link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="w-full md:w-auto text-center bg-[#FFD700] text-[#0F1C2D] px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-[#FFD700]/90 hover:shadow-lg hover:shadow-[#FFD700]/20 inline-flex items-center justify-center gap-2"
+                className="w-full text-center bg-[#FFD700] text-[#0F1C2D] px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-[#FFD700]/90 hover:shadow-lg inline-flex items-center justify-center gap-2"
               >
                 <FaGlobe className="w-4 h-4" />
                 Learn More
@@ -147,14 +147,14 @@ const Destinations = () => {
   const { isDarkMode } = useTheme();
   
   return (
-    <section id="destinations" className={`py-20 ${isDarkMode ? 'bg-[#0F1C2D]' : 'bg-gray-50'} transition-colors duration-300`}>
+    <section className={`py-20 ${isDarkMode ? 'bg-[#0F1C2D]' : 'bg-gray-50'} transition-colors duration-300`} id="destinations">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className={`text-center mb-16 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
+          className="text-center mb-16"
         >
           <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
             Upcoming Adventures
@@ -165,7 +165,7 @@ const Destinations = () => {
           </p>
         </motion.div>
 
-        <div className="space-y-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <TripCard
             title="MOROCCO 2025"
             subtitle="BACK TO THE ORIGINS (Vol. 2): Discovering the Sahara Desert"

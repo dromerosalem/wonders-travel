@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaStar, FaClock } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BASE_URL } from '../config/constants';
 import { useTheme } from '../context/ThemeContext';
 
@@ -11,25 +11,47 @@ const TripHighlight = ({ icon: Icon, label }) => {
   return (
     <div className="flex items-center gap-1.5">
       <Icon className="text-[#FFD700] text-sm" />
-      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{label}</span>
+      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+        {label}
+      </span>
     </div>
   );
 };
 
-const Button = ({ href, variant = 'primary', children }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className={`flex h-11 flex-1 items-center justify-center rounded-lg text-base font-medium transition-all duration-300 ${
-      variant === 'primary'
-        ? 'bg-[#FFD700] text-gray-900 hover:bg-[#FFD700]/90'
-        : 'border border-[#FFD700] text-[#FFD700] hover:bg-[#FFD700]/10'
-    } hover:shadow-lg hover:shadow-[#FFD700]/20`}
-  >
-    {children}
-  </a>
-);
+const Button = ({ href, variant = 'primary', children }) => {
+  const { isDarkMode } = useTheme();
+  
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`flex h-11 flex-1 items-center justify-center rounded-lg text-base font-medium transition-all duration-300 ${
+        variant === 'primary'
+          ? 'bg-[#FFD700] text-[#0F1C2D] hover:bg-[#FFD700]/90'
+          : isDarkMode 
+            ? 'border border-[#FFD700] text-[#FFD700] hover:bg-[#FFD700]/10'
+            : 'border border-[#0F1C2D] text-[#0F1C2D] hover:bg-[#0F1C2D]/5'
+      } hover:shadow-lg`}
+    >
+      {children}
+    </a>
+  );
+};
+
+const TripLabel = ({ type }) => {
+  const { isDarkMode } = useTheme();
+  
+  return (
+    <span className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
+      isDarkMode 
+        ? 'bg-[#FFD700]/10 text-[#FFD700]'
+        : 'bg-[#0F1C2D]/10 text-[#0F1C2D]'
+    }`}>
+      {type}
+    </span>
+  );
+};
 
 const PastTripCard = ({ trip }) => {
   const { isDarkMode } = useTheme();
@@ -84,15 +106,20 @@ const PastTripCard = ({ trip }) => {
             {trip.subtitle}
           </p>
           
-          <div className="mt-4 grid grid-cols-2 gap-3">
-            <TripHighlight icon={FaClock} label={trip.duration} />
-            <TripHighlight icon={FaUsers} label={trip.groupSize} />
-            <TripHighlight icon={FaStar} label={trip.rating} />
-            {trip.category && (
-              <div className="rounded-full border border-[#FFD700]/30 px-2 py-0.5 text-center text-xs text-[#FFD700]">
-                {trip.category}
+          <div className="mt-4 space-y-3">
+            <div className="grid grid-cols-2 gap-3">
+              <TripHighlight icon={FaClock} label={trip.duration} />
+              <TripHighlight icon={FaUsers} label={trip.groupSize} />
+            </div>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1">
+                <FaStar className="text-[#FFD700] text-sm" />
+                <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                  {trip.rating}
+                </span>
               </div>
-            )}
+              <TripLabel type={trip.category} />
+            </div>
           </div>
         </div>
         <div className="flex gap-3">
@@ -110,6 +137,26 @@ const PastTripCard = ({ trip }) => {
 
 const PastTrips = () => {
   const { isDarkMode } = useTheme();
+  const navigate = useNavigate();
+
+  const handleViewUpcomingTrips = () => {
+    navigate('/');
+    
+    setTimeout(() => {
+      const destinationsSection = document.getElementById('destinations');
+      if (destinationsSection) {
+        const headerOffset = 80;
+        const elementPosition = destinationsSection.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100);
+  };
+
   const trips = [
     {
       title: 'Oktoberfest 2024',
@@ -152,7 +199,7 @@ const PastTrips = () => {
   ];
 
   return (
-    <section className={`min-h-screen ${
+    <section className={`min-h-screen flex items-center ${
       isDarkMode 
         ? 'bg-gradient-to-b from-gray-900 to-black' 
         : 'bg-gradient-to-b from-gray-50 to-white'
@@ -174,7 +221,7 @@ const PastTrips = () => {
           </p>
         </motion.div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 mb-12">
           {trips.map((trip, index) => (
             <PastTripCard key={index} trip={trip} />
           ))}
@@ -185,20 +232,14 @@ const PastTrips = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
-          className="mt-12 text-center"
+          className="text-center"
         >
-          <Link
-            to="/"
-            onClick={() => {
-              const destinationsSection = document.getElementById('destinations');
-              if (destinationsSection) {
-                destinationsSection.scrollIntoView({ behavior: 'smooth' });
-              }
-            }}
-            className="inline-block rounded-lg bg-[#FFD700] px-6 py-3 text-base font-medium text-gray-900 transition-all duration-300 hover:bg-[#FFD700]/90 hover:shadow-lg hover:shadow-[#FFD700]/20"
+          <button
+            onClick={handleViewUpcomingTrips}
+            className="inline-block bg-[#FFD700] text-[#0F1C2D] px-8 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-[#FFD700]/90 hover:shadow-lg"
           >
             View Upcoming Trips
-          </Link>
+          </button>
         </motion.div>
       </div>
     </section>
