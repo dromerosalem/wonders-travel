@@ -3,13 +3,18 @@ import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaStar, FaClock } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { BASE_URL } from '../config/constants';
+import { useTheme } from '../context/ThemeContext';
 
-const TripHighlight = ({ icon: Icon, label }) => (
-  <div className="flex items-center gap-1.5">
-    <Icon className="text-[#FFD700] text-sm" />
-    <span className="text-sm text-gray-300">{label}</span>
-  </div>
-);
+const TripHighlight = ({ icon: Icon, label }) => {
+  const { isDarkMode } = useTheme();
+  
+  return (
+    <div className="flex items-center gap-1.5">
+      <Icon className="text-[#FFD700] text-sm" />
+      <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{label}</span>
+    </div>
+  );
+};
 
 const Button = ({ href, variant = 'primary', children }) => (
   <a
@@ -26,70 +31,85 @@ const Button = ({ href, variant = 'primary', children }) => (
   </a>
 );
 
-const PastTripCard = ({ trip }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className="group relative overflow-hidden rounded-xl bg-gradient-to-br from-gray-900/80 to-gray-900/60 backdrop-blur-sm"
-  >
-    <div className="absolute right-4 top-4 z-10">
-      <div className="rounded-full bg-[#FFD700]/90 px-3 py-1 text-xs font-medium text-gray-900">
-        COMPLETED
+const PastTripCard = ({ trip }) => {
+  const { isDarkMode } = useTheme();
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.5 }}
+      className={`group relative overflow-hidden rounded-xl ${
+        isDarkMode 
+          ? 'bg-gradient-to-br from-gray-900/80 to-gray-900/60' 
+          : 'bg-white shadow-lg border border-gray-200'
+      } backdrop-blur-sm transition-colors duration-300`}
+    >
+      <div className="absolute right-4 top-4 z-10">
+        <div className="rounded-full bg-[#FFD700]/90 px-3 py-1 text-xs font-medium text-gray-900">
+          COMPLETED
+        </div>
       </div>
-    </div>
-    <div className="relative h-48 overflow-hidden">
-      <img
-        src={trip.image}
-        alt={trip.title}
-        className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110"
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-60" />
-      <div className="absolute bottom-4 left-4 right-4">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <FaMapMarkerAlt className="text-[#FFD700]" />
-            <span className="text-sm text-white">{trip.location}</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <FaCalendarAlt className="text-[#FFD700]" />
-            <span className="text-sm text-white">{trip.date}</span>
+      <div className="relative h-48 overflow-hidden">
+        <img
+          src={trip.image}
+          alt={trip.title}
+          className="h-full w-full object-cover transition-all duration-500 group-hover:scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-80 transition-opacity duration-500 group-hover:opacity-60" />
+        <div className="absolute bottom-4 left-4 right-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <FaMapMarkerAlt className="text-[#FFD700]" />
+              <span className="text-sm text-white">{trip.location}</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <FaCalendarAlt className="text-[#FFD700]" />
+              <span className="text-sm text-white">{trip.date}</span>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-    <div className="p-6">
-      <div className="mb-4">
-        <h3 className="text-xl font-bold text-white group-hover:text-[#FFD700] transition-colors duration-300">
-          {trip.title}
-        </h3>
-        <p className="text-gray-300">{trip.subtitle}</p>
-        
-        <div className="mt-4 grid grid-cols-2 gap-3">
-          <TripHighlight icon={FaClock} label={trip.duration} />
-          <TripHighlight icon={FaUsers} label={trip.groupSize} />
-          <TripHighlight icon={FaStar} label={trip.rating} />
-          {trip.category && (
-            <div className="rounded-full border border-[#FFD700]/30 px-2 py-0.5 text-center text-xs text-[#FFD700]">
-              {trip.category}
-            </div>
+      <div className="p-6">
+        <div className="mb-4">
+          <h3 className={`text-xl font-bold transition-colors duration-300 ${
+            isDarkMode 
+              ? 'text-white group-hover:text-[#FFD700]' 
+              : 'text-gray-800 group-hover:text-[#FFD700]'
+          }`}>
+            {trip.title}
+          </h3>
+          <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+            {trip.subtitle}
+          </p>
+          
+          <div className="mt-4 grid grid-cols-2 gap-3">
+            <TripHighlight icon={FaClock} label={trip.duration} />
+            <TripHighlight icon={FaUsers} label={trip.groupSize} />
+            <TripHighlight icon={FaStar} label={trip.rating} />
+            {trip.category && (
+              <div className="rounded-full border border-[#FFD700]/30 px-2 py-0.5 text-center text-xs text-[#FFD700]">
+                {trip.category}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="flex gap-3">
+          <Button href={trip.website}>Trip Details</Button>
+          {trip.video && (
+            <Button href={trip.video} variant="secondary">
+              Watch Aftermovie
+            </Button>
           )}
         </div>
       </div>
-      <div className="flex gap-3">
-        <Button href={trip.website}>Trip Details</Button>
-        {trip.video && (
-          <Button href={trip.video} variant="secondary">
-            Watch Aftermovie
-          </Button>
-        )}
-      </div>
-    </div>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 const PastTrips = () => {
+  const { isDarkMode } = useTheme();
   const trips = [
     {
       title: 'Oktoberfest 2024',
@@ -132,7 +152,11 @@ const PastTrips = () => {
   ];
 
   return (
-    <section className="min-h-screen bg-gradient-to-b from-gray-900 to-black py-20">
+    <section className={`min-h-screen ${
+      isDarkMode 
+        ? 'bg-gradient-to-b from-gray-900 to-black' 
+        : 'bg-gradient-to-b from-gray-50 to-white'
+    } py-20 transition-colors duration-300`}>
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -141,9 +165,11 @@ const PastTrips = () => {
           transition={{ duration: 0.5 }}
           className="mb-12 text-center"
         >
-          <h2 className="mb-4 text-4xl font-bold text-white">Past Adventures</h2>
+          <h2 className={`mb-4 text-4xl font-bold ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+            Past Adventures
+          </h2>
           <div className="mx-auto h-1 w-24 bg-[#FFD700]" />
-          <p className="mt-6 text-lg text-gray-300">
+          <p className={`mt-6 text-lg ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
             Relive our past adventures and get inspired for your next journey
           </p>
         </motion.div>

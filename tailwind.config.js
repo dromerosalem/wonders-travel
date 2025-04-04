@@ -6,9 +6,12 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: '#0F1C2D',
-        accent: '#F7C948',
-        light: '#FFF8E7',
+        background: 'var(--background-primary)',
+        text: {
+          primary: 'var(--text-primary)',
+          secondary: 'var(--text-secondary)',
+        },
+        accent: 'var(--accent-color)',
       },
       fontFamily: {
         sans: ['Poppins', 'Inter', 'system-ui', 'sans-serif'],

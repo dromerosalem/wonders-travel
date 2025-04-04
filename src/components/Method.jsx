@@ -10,17 +10,22 @@ const MethodCard = ({ number, title, description, icon, isLast }) => {
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5 }}
+      transition={{ 
+        duration: 0.8,
+        ease: [0.4, 0, 0.2, 1]
+      }}
       viewport={{ once: true }}
       className="relative"
     >
-      <div className={`${
-        isDarkMode 
+      <div className={`
+        ${isDarkMode 
           ? 'bg-gradient-to-br from-[#1A2B3D] to-[#0F1C2D]' 
           : 'bg-white'
-        } p-8 rounded-lg shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-2 border ${
-          isDarkMode ? 'border-[#FFD700]/10' : 'border-gray-200'
-        }`}>
+        } p-8 rounded-lg shadow-xl hover:shadow-2xl 
+        transform transition-all duration-[600ms] ease-[cubic-bezier(0.4,0,0.2,1)]
+        hover:-translate-y-2 border
+        ${isDarkMode ? 'border-[#FFD700]/10' : 'border-gray-200'}
+      `}>
         <div className="flex items-center gap-4 mb-4">
           <div className="w-12 h-12 bg-[#FFD700] rounded-full flex items-center justify-center">
             <span className="text-[#0F1C2D] font-bold text-xl">{number}</span>

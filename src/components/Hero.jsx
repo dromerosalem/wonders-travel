@@ -1,20 +1,87 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BASE_URL } from '../config/constants';
+import { useTheme } from '../context/ThemeContext';
 
 const Hero = () => {
+  const { isDarkMode } = useTheme();
+  const [bgLoaded, setBgLoaded] = useState(false);
+  
+  // Preload both images
+  useEffect(() => {
+    const darkImage = new Image();
+    const lightImage = new Image();
+    darkImage.src = `${BASE_URL}/images/hero-bg.png`;
+    lightImage.src = `${BASE_URL}/images/hero-bg-light.png`;
+    
+    Promise.all([
+      new Promise(resolve => darkImage.onload = resolve),
+      new Promise(resolve => lightImage.onload = resolve)
+    ]).then(() => setBgLoaded(true));
+  }, []);
+
   return (
-    <section className="relative min-h-screen flex items-center justify-center">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${BASE_URL}/images/hero-bg.png)` }}
-      >
-        <div className="absolute inset-0 bg-[#0F1C2D]/50"></div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Image Container */}
+      <div className="absolute inset-0">
+        {/* Base Layer (Dark Image) */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{ 
+            backgroundImage: `url(${BASE_URL}/images/hero-bg.png)`,
+          }}
+        />
+
+        {/* Light Image Layer with Opacity Transition */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-[1200ms]"
+          style={{ 
+            backgroundImage: `url(${BASE_URL}/images/hero-bg-light.png)`,
+            opacity: isDarkMode ? 0 : 1,
+            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        />
+
+        {/* Brightness Overlay */}
+        <div 
+          className="absolute inset-0 transition-all duration-[1200ms] mix-blend-soft-light"
+          style={{ 
+            backgroundColor: '#FFFFFF',
+            opacity: isDarkMode ? 0 : 0.3,
+            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        />
+
+        {/* Color Temperature Overlay */}
+        <div 
+          className="absolute inset-0 transition-all duration-[1200ms]"
+          style={{ 
+            background: isDarkMode 
+              ? 'linear-gradient(to bottom, rgba(15, 28, 45, 0.5), rgba(15, 28, 45, 0.5))'
+              : 'linear-gradient(to bottom, rgba(255, 225, 125, 0.1), rgba(255, 225, 125, 0.1))',
+            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        />
+
+        {/* Time of Day Light Effect */}
+        <div 
+          className="absolute inset-0 transition-all duration-[1200ms]"
+          style={{ 
+            background: isDarkMode
+              ? 'radial-gradient(circle at 50% 50%, rgba(15, 28, 45, 0), rgba(15, 28, 45, 0.8))'
+              : 'radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0))',
+            opacity: isDarkMode ? 1 : 0,
+            transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
+          }}
+        />
       </div>
 
-      {/* Content */}
+      {/* Content with enhanced transitions */}
       <div className="relative z-10 text-center px-4 sm:px-6 lg:px-8">
-        <div className="w-64 sm:w-80 mx-auto mb-12">
+        <div 
+          className={`w-64 sm:w-80 mx-auto mb-12 transition-all duration-[1200ms] ${
+            isDarkMode ? 'opacity-100' : 'opacity-90'
+          }`}
+        >
           <img
             src={`${BASE_URL}/images/logo.png`}
             alt="Wonders.Travel - Your gateway to extraordinary destinations"
@@ -22,15 +89,33 @@ const Hero = () => {
           />
         </div>
         
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-[#FFF8E7] tracking-wide mb-6">
+        <h1 
+          className={`text-4xl sm:text-5xl lg:text-6xl font-bold tracking-wide mb-6 transition-all duration-[1200ms] ${
+            isDarkMode ? 'text-[#FFF8E7]' : 'text-white'
+          }`}
+        >
           Adventures that tie bonds for life
         </h1>
         
-        <p className="text-lg sm:text-xl text-[#FFF8E7]/90 mb-12 max-w-2xl mx-auto">
+        <p 
+          className={`text-lg sm:text-xl mb-12 max-w-2xl mx-auto transition-all duration-[1200ms] ${
+            isDarkMode ? 'text-[#FFF8E7]/90' : 'text-white/90'
+          }`}
+        >
           Travel the Wonders of the World with a pre-selected like-minded small group of people just like you
         </p>
 
-        <button className="bg-[#F7C948] text-[#0F1C2D] px-8 py-3 text-lg rounded-full font-medium hover:bg-[#F7C948]/90 transition-colors duration-200">
+        <button 
+          className={`
+            px-8 py-3 text-lg rounded-full font-medium 
+            transform transition-all duration-300 
+            hover:scale-105 hover:shadow-lg active:scale-95
+            ${isDarkMode 
+              ? 'bg-[#F7C948] text-[#0F1C2D] hover:bg-[#F7C948]/90' 
+              : 'bg-white text-[#0F1C2D] hover:bg-white/90'
+            }
+          `}
+        >
           Get Started
         </button>
       </div>

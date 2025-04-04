@@ -1,28 +1,36 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaChevronDown, FaSpinner } from 'react-icons/fa';
+import { useTheme } from '../context/ThemeContext';
 
 const FAQItem = ({ question, answer }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { isDarkMode } = useTheme();
 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="border-b border-[#F7C948]/10"
+      className={`border-b ${isDarkMode ? 'border-[#F7C948]/10' : 'border-gray-300'}`}
     >
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full py-6 flex items-center justify-between text-left"
+        className="w-full py-6 flex items-center justify-between text-left group"
       >
-        <h3 className="text-lg font-medium text-[#FFF8E7] pr-8">{question}</h3>
+        <h3 className={`text-lg font-medium pr-8 ${
+          isDarkMode ? 'text-[#FFF8E7]' : 'text-gray-800'
+        } group-hover:text-[#F7C948] transition-colors duration-300`}>{question}</h3>
         <motion.div
           animate={{ rotate: isOpen ? 180 : 0 }}
           transition={{ duration: 0.2 }}
-          className="text-[#F7C948]"
+          className={`${
+            isDarkMode 
+              ? 'text-[#F7C948]' 
+              : 'text-[#0F1C2D] bg-[#FFD700] p-1.5 rounded-full'
+          } transition-colors duration-300`}
         >
-          <FaChevronDown />
+          <FaChevronDown className={`${isDarkMode ? 'w-4 h-4' : 'w-3 h-3'}`} />
         </motion.div>
       </button>
       <AnimatePresence>
@@ -34,7 +42,9 @@ const FAQItem = ({ question, answer }) => {
             transition={{ duration: 0.2 }}
             className="overflow-hidden"
           >
-            <div className="pb-6 text-[#FFF8E7]/80 leading-relaxed">
+            <div className={`pb-6 leading-relaxed ${
+              isDarkMode ? 'text-[#FFF8E7]/80' : 'text-gray-700'
+            }`}>
               {answer}
             </div>
           </motion.div>
@@ -45,6 +55,7 @@ const FAQItem = ({ question, answer }) => {
 };
 
 const ContactForm = () => {
+  const { isDarkMode } = useTheme();
   const [formState, setFormState] = useState({
     name: '',
     email: '',
@@ -74,7 +85,11 @@ const ContactForm = () => {
           value={formState.name}
           onChange={(e) => setFormState({ ...formState, name: e.target.value })}
           required
-          className="w-full px-6 py-4 bg-[#0F1C2D]/30 border border-[#F7C948]/10 rounded-full text-[#FFF8E7] placeholder-[#FFF8E7]/50 focus:outline-none focus:border-[#F7C948]/30 transition-colors"
+          className={`w-full px-6 py-4 rounded-full focus:outline-none transition-colors ${
+            isDarkMode 
+              ? 'bg-[#0F1C2D]/30 border border-[#F7C948]/10 text-[#FFF8E7] placeholder-[#FFF8E7]/50 focus:border-[#F7C948]/30' 
+              : 'bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:border-[#F7C948] shadow-sm'
+          }`}
         />
       </motion.div>
 
@@ -89,7 +104,11 @@ const ContactForm = () => {
           value={formState.email}
           onChange={(e) => setFormState({ ...formState, email: e.target.value })}
           required
-          className="w-full px-6 py-4 bg-[#0F1C2D]/30 border border-[#F7C948]/10 rounded-full text-[#FFF8E7] placeholder-[#FFF8E7]/50 focus:outline-none focus:border-[#F7C948]/30 transition-colors"
+          className={`w-full px-6 py-4 rounded-full focus:outline-none transition-colors ${
+            isDarkMode 
+              ? 'bg-[#0F1C2D]/30 border border-[#F7C948]/10 text-[#FFF8E7] placeholder-[#FFF8E7]/50 focus:border-[#F7C948]/30' 
+              : 'bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:border-[#F7C948] shadow-sm'
+          }`}
         />
       </motion.div>
 
@@ -104,7 +123,11 @@ const ContactForm = () => {
           onChange={(e) => setFormState({ ...formState, message: e.target.value })}
           required
           rows={6}
-          className="w-full px-6 py-4 bg-[#0F1C2D]/30 border border-[#F7C948]/10 rounded-3xl text-[#FFF8E7] placeholder-[#FFF8E7]/50 focus:outline-none focus:border-[#F7C948]/30 transition-colors resize-none"
+          className={`w-full px-6 py-4 rounded-3xl focus:outline-none transition-colors resize-none ${
+            isDarkMode 
+              ? 'bg-[#0F1C2D]/30 border border-[#F7C948]/10 text-[#FFF8E7] placeholder-[#FFF8E7]/50 focus:border-[#F7C948]/30' 
+              : 'bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:border-[#F7C948] shadow-sm'
+          }`}
         />
       </motion.div>
 
@@ -117,7 +140,12 @@ const ContactForm = () => {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="px-12 py-3 bg-[#F7C948] text-[#0F1C2D] rounded-full font-medium transition-all duration-300 hover:bg-[#F7C948]/90 hover:transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+          className={`px-12 py-3 rounded-full font-medium transition-all duration-300 
+            ${isDarkMode 
+              ? 'bg-[#F7C948] text-[#0F1C2D]' 
+              : 'bg-[#0F1C2D] text-white hover:bg-[#0F1C2D]/90'
+            } 
+            hover:transform hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2`}
         >
           {isSubmitting ? (
             <>
@@ -134,6 +162,7 @@ const ContactForm = () => {
 };
 
 const FAQ = () => {
+  const { isDarkMode } = useTheme();
   const faqs = [
     {
       question: "What is included in the fee?",
@@ -166,34 +195,37 @@ const FAQ = () => {
   ];
 
   return (
-    <section className="py-24 px-4 bg-[#0F1C2D]" id="faq">
+    <section className={`py-24 px-4 ${isDarkMode ? 'bg-[#0F1C2D]' : 'bg-gray-100'} transition-colors duration-300`} id="faq">
       <div className="max-w-3xl mx-auto">
-        {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-sm uppercase tracking-wider text-[#F7C948] mb-4">
+          <h2 className={`text-sm uppercase tracking-wider mb-4 ${
+            isDarkMode ? 'text-[#F7C948]' : 'text-[#F7C948] font-bold'
+          }`}>
             WANNA KNOW MORE?
           </h2>
-          <h3 className="text-4xl md:text-5xl font-bold text-[#FFF8E7] mb-6">
+          <h3 className={`text-4xl md:text-5xl font-bold mb-6 ${
+            isDarkMode ? 'text-[#FFF8E7]' : 'text-gray-900'
+          }`}>
             Frequently Asked Questions
           </h3>
-          <p className="text-[#FFF8E7]/80 max-w-2xl mx-auto text-lg">
+          <p className={`max-w-2xl mx-auto text-lg ${
+            isDarkMode ? 'text-[#FFF8E7]/80' : 'text-gray-700'
+          }`}>
             Find answers to common questions about our travel experiences
           </p>
         </motion.div>
 
-        {/* FAQ Accordion */}
         <div className="mb-20">
           {faqs.map((faq, index) => (
             <FAQItem key={index} question={faq.question} answer={faq.answer} />
           ))}
         </div>
 
-        {/* Contact Form */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

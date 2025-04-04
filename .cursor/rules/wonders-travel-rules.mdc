@@ -1,0 +1,22 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Every page must be optimized for SEO using best practices: semantic HTML tags, unique meta titles and descriptions, Open Graph tags for social media, and keywords researched with travel-related intent.
+
+Design every page with a clear user journey and conversion goal (book a trip, contact us, join newsletter, etc). Above-the-fold content must grab attention with high-impact visuals and copy.
+
+Content must be engaging and localized when appropriate. Use persuasive copywriting techniques (AIDA model) to appeal to users looking for vacations and adventures.
+
+Use full-bleed imagery, smooth scroll animations, and interactive elements (like hover states and parallax) to build an immersive user experience that reflects global travel appeal
+
+All interactive elements must be keyboard-navigable, with alt text and ARIA labels. Use semantic HTML structure and heading hierarchy for both SEO and accessibility benefits
+
+All styles must be handled using Tailwind utility classes unless a clear reason exists for custom CSS. Keep styles clean and consistent using a design system or utility-first approach
+
+
+Design must look pixel-perfect on mobile, tablet, and desktop. Use mobile-first Tailwind breakpoints, test on various screen sizes regularly
+
+Each route/page must include <Head> metadata (via react-helmet or similar) and schema.org structured data for rich search result snippets where possible (e.g., FAQs, Reviews, Destinations).
+

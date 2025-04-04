@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaMapMarkerAlt, FaCalendarAlt, FaUsers, FaClock, FaGlobe } from 'react-icons/fa';
 import { BASE_URL } from '../config/constants';
+import { useTheme } from '../context/ThemeContext';
 
 const CountdownTimer = ({ targetDate }) => {
+  const { isDarkMode } = useTheme();
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
   function calculateTimeLeft() {
@@ -40,11 +42,15 @@ const CountdownTimer = ({ targetDate }) => {
       {timeBlocks.map((block, index) => (
         <React.Fragment key={block.label}>
           <div className="text-center">
-            <div className="bg-[#1A2B3D] rounded-lg p-2 md:p-4 min-w-[60px] md:min-w-[80px]">
+            <div className={`rounded-lg p-2 md:p-4 min-w-[60px] md:min-w-[80px] ${
+              isDarkMode ? 'bg-[#1A2B3D]' : 'bg-white shadow-md border border-gray-200'
+            }`}>
               <div className="text-2xl md:text-3xl font-bold text-[#FFD700]">
                 {String(block.value).padStart(2, '0')}
               </div>
-              <div className="text-xs md:text-sm uppercase text-gray-400 mt-1">{block.label}</div>
+              <div className={`text-xs md:text-sm uppercase mt-1 ${
+                isDarkMode ? 'text-gray-400' : 'text-gray-700 font-medium'
+              }`}>{block.label}</div>
             </div>
           </div>
           {index < timeBlocks.length - 1 && (
@@ -56,21 +62,29 @@ const CountdownTimer = ({ targetDate }) => {
   );
 };
 
-const TripHighlight = ({ icon: Icon, label }) => (
-  <div className="flex items-center gap-2 text-gray-300">
+const TripHighlight = ({ icon: Icon, label, isDarkMode }) => (
+  <div className="flex items-center gap-2">
     <Icon className="text-[#FFD700] w-4 h-4" />
-    <span className="text-sm">{label}</span>
+    <span className={`text-sm ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>{label}</span>
   </div>
 );
 
 const TripCard = ({ title, subtitle, date, image, status, link, duration, groupSize, location }) => {
+  const { isDarkMode } = useTheme();
+  
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6 }}
       viewport={{ once: true }}
-      className="bg-gradient-to-br from-[#1A2B3D] to-[#0F1C2D] rounded-lg overflow-hidden shadow-xl max-w-4xl mx-auto border border-[#FFD700]/10 hover:border-[#FFD700]/30 transition-all duration-300 hover:shadow-2xl hover:shadow-[#FFD700]/5"
+      className={`${
+        isDarkMode 
+          ? 'bg-gradient-to-br from-[#1A2B3D] to-[#0F1C2D]' 
+          : 'bg-white'
+      } rounded-lg overflow-hidden shadow-xl max-w-4xl mx-auto border ${
+        isDarkMode ? 'border-[#FFD700]/10' : 'border-gray-200 hover:border-[#FFD700]/50'
+      } transition-all duration-300 hover:shadow-2xl`}
     >
       <div className="grid md:grid-cols-2 gap-0">
         <div className="relative group overflow-hidden">
@@ -88,15 +102,17 @@ const TripCard = ({ title, subtitle, date, image, status, link, duration, groupS
         <div className="p-8">
           <div className="space-y-4">
             <div className="flex flex-wrap gap-4 mb-6">
-              <TripHighlight icon={FaMapMarkerAlt} label={location} />
-              <TripHighlight icon={FaClock} label={duration} />
-              <TripHighlight icon={FaUsers} label={groupSize} />
+              <TripHighlight icon={FaMapMarkerAlt} label={location} isDarkMode={isDarkMode} />
+              <TripHighlight icon={FaClock} label={duration} isDarkMode={isDarkMode} />
+              <TripHighlight icon={FaUsers} label={groupSize} isDarkMode={isDarkMode} />
             </div>
 
-            <h2 className="text-4xl font-bold text-[#FFD700]">{title}</h2>
-            <h3 className="text-xl text-gray-300 leading-relaxed">{subtitle}</h3>
+            <h2 className={`text-4xl font-bold ${isDarkMode ? 'text-[#FFD700]' : 'text-[#0F1C2D]'}`}>{title}</h2>
+            <h3 className={`text-xl leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              {subtitle}
+            </h3>
             
-            <div className="flex items-center gap-2 text-gray-400">
+            <div className={`flex items-center gap-2 ${isDarkMode ? 'text-gray-400' : 'text-gray-600 font-medium'}`}>
               <FaCalendarAlt className="text-[#FFD700]" />
               <span>{new Date(date).toLocaleDateString('en-US', { 
                 month: 'long',
@@ -128,21 +144,23 @@ const TripCard = ({ title, subtitle, date, image, status, link, duration, groupS
 };
 
 const Destinations = () => {
+  const { isDarkMode } = useTheme();
+  
   return (
-    <section className="py-20 bg-[#0F1C2D]" id="destinations">
+    <section className={`py-20 ${isDarkMode ? 'bg-[#0F1C2D]' : 'bg-gray-50'} transition-colors duration-300`} id="destinations">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
-          className="text-center mb-16"
+          className={`text-center mb-16 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-6">
+          <h2 className={`text-4xl md:text-5xl font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
             Upcoming Adventures
           </h2>
           <div className="w-24 h-1 bg-[#FFD700] mx-auto"></div>
-          <p className="text-gray-300 text-lg mt-6 max-w-2xl mx-auto">
+          <p className={`${isDarkMode ? 'text-gray-300' : 'text-gray-600'} text-lg mt-6 max-w-2xl mx-auto`}>
             Join our exclusive group trips to the world's most fascinating destinations
           </p>
         </motion.div>

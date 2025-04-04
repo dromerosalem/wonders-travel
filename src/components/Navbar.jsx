@@ -3,12 +3,15 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaBars, FaTimes, FaArrowRight } from 'react-icons/fa';
 import { BASE_URL } from '../config/constants';
+import ThemeToggle from './ThemeToggle';
+import { useTheme } from '../context/ThemeContext';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
   const navigate = useNavigate();
+  const { isDarkMode } = useTheme();
 
   // Menu items with their types (section or page)
   const menuItems = [
@@ -117,18 +120,18 @@ const Navbar = () => {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: '100%' }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="fixed top-0 right-0 w-[80%] max-w-sm h-full bg-[#0F1C2D] shadow-xl pointer-events-auto"
+              className="fixed top-0 right-0 w-[80%] max-w-sm h-full bg-background shadow-xl pointer-events-auto"
             >
               <div className="flex flex-col h-full">
                 {/* Mobile Menu Header */}
-                <div className="flex justify-between items-center p-6 border-b border-[#FFD700]/10">
+                <div className="flex justify-between items-center p-6 border-b border-accent/10">
                   <Link to="/" className="flex items-center space-x-2">
                     <img 
                       src={`${BASE_URL}/images/wt-logo.png`}
                       alt="Wonders.Travel Logo" 
                       className="h-12 w-auto"
                     />
-                    <span className="text-2xl font-bold text-[#FFD700]">Wonders.Travel</span>
+                    <span className="text-2xl font-bold text-accent">Wonders.Travel</span>
                   </Link>
                 </div>
 
@@ -139,7 +142,7 @@ const Navbar = () => {
                       <motion.button
                         key={item.path}
                         onClick={() => handleNavigation(item.path, item.type)}
-                        className="w-full text-left text-xl font-medium text-gray-300 hover:text-[#FFD700] transition-colors duration-200 py-2"
+                        className="w-full text-left text-xl font-medium text-text-secondary hover:text-accent transition-colors duration-200 py-2"
                         whileHover={{ x: 10 }}
                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                       >
@@ -150,16 +153,19 @@ const Navbar = () => {
                 </div>
 
                 {/* Mobile Menu Footer */}
-                <div className="p-6 border-t border-[#FFD700]/10">
-                  <motion.button
-                    onClick={() => handleNavigation('#destinations', 'section')}
-                    className="w-full bg-[#FFD700] text-[#0F1C2D] px-6 py-4 rounded-full hover:bg-[#FFD700]/90 transition-all duration-200 flex items-center justify-center space-x-2 font-medium shadow-lg hover:shadow-[#FFD700]/20"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <span>Explore Destinations</span>
-                    <FaArrowRight />
-                  </motion.button>
+                <div className="p-6 border-t border-accent/10">
+                  <div className="flex items-center justify-between mb-4">
+                    <ThemeToggle />
+                    <motion.button
+                      onClick={() => handleNavigation('#destinations', 'section')}
+                      className="w-full ml-4 bg-accent text-background px-6 py-4 rounded-full hover:bg-accent/90 transition-all duration-200 flex items-center justify-center space-x-2 font-medium shadow-lg hover:shadow-accent/20"
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <span>Explore Destinations</span>
+                      <FaArrowRight />
+                    </motion.button>
+                  </div>
                 </div>
               </div>
             </motion.div>
@@ -169,7 +175,7 @@ const Navbar = () => {
 
       {/* Navbar */}
       <nav className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        isScrolled ? 'bg-[#0F1C2D]/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
+        isScrolled ? 'bg-background/95 backdrop-blur-md shadow-lg' : 'bg-transparent'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-20">
@@ -180,7 +186,15 @@ const Navbar = () => {
                 alt="Wonders.Travel Logo" 
                 className="h-12 w-auto"
               />
-              <span className="text-2xl font-bold text-[#FFD700]">Wonders.Travel</span>
+              <span className={`text-2xl font-bold transition-colors duration-300 ${
+                isScrolled
+                  ? 'text-accent' // When scrolled, always gold
+                  : isDarkMode
+                    ? 'text-accent' // When not scrolled and dark mode, gold
+                    : 'text-[#0F1C2D]' // When not scrolled and light mode, dark blue
+              }`}>
+                Wonders.Travel
+              </span>
             </Link>
 
             {/* Desktop Menu */}
@@ -189,14 +203,15 @@ const Navbar = () => {
                 <button
                   key={item.path}
                   onClick={() => handleNavigation(item.path, item.type)}
-                  className="text-base font-medium text-gray-300 hover:text-[#FFD700] transition-colors duration-200"
+                  className="text-base font-medium text-text-secondary hover:text-accent transition-colors duration-200"
                 >
                   {item.label}
                 </button>
               ))}
+              <ThemeToggle />
               <button
                 onClick={() => handleNavigation('#destinations', 'section')}
-                className="bg-[#FFD700] text-[#0F1C2D] px-6 py-2 rounded-full hover:bg-[#FFD700]/90 transition-all duration-200 font-medium shadow-lg hover:shadow-[#FFD700]/20"
+                className="bg-accent text-background px-6 py-2 rounded-full hover:bg-accent/90 transition-all duration-200 font-medium shadow-lg hover:shadow-accent/20"
               >
                 Book Now
               </button>
@@ -205,7 +220,7 @@ const Navbar = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden text-[#FFD700] hover:text-[#FFD700]/80 focus:outline-none z-50"
+              className="lg:hidden text-accent hover:text-accent/80 focus:outline-none z-50"
               aria-label="Toggle menu"
             >
               {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}

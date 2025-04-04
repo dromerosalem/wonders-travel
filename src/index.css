@@ -4,13 +4,46 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Dark mode colors (default) */
+  --background-primary: #0F1C2D;
+  --text-primary: #ffffff;
+  --text-secondary: #CBD5E1;
+  --accent-color: #FFD700;
+  /* Add transition variables for consistency */
+  --transition-timing: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-duration: 600ms;
+}
+
+/* Light mode colors - only apply to Method and Navbar */
+:root.light-mode {
+  --background-primary: #ffffff;
+  --text-primary: #0F1C2D;
+  --text-secondary: #4B5563;
+  --accent-color: #FFD700;
+}
+
+/* Enhanced transitions for Method and Navbar */
+nav,
+#method {
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: 
+    background-color var(--transition-duration) var(--transition-timing),
+    color var(--transition-duration) var(--transition-timing),
+    border-color var(--transition-duration) var(--transition-timing),
+    box-shadow var(--transition-duration) var(--transition-timing);
+}
+
+/* Keep other components in dark mode */
+body {
+  background-color: #0F1C2D;
+  color: #ffffff;
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
-  }
-
-  body {
-    @apply font-sans text-light bg-primary;
   }
 }
 
@@ -18,4 +51,11 @@
   .nav-link {
     @apply text-light hover:text-accent transition-colors duration-200;
   }
+}
+
+/* Add a global transition class */
+.theme-transition {
+  transition-property: background-color, border-color, color, fill, stroke, opacity, box-shadow, transform;
+  transition-timing-function: var(--transition-timing);
+  transition-duration: var(--transition-duration);
 } 
