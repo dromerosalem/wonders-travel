@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/wonders-travel/static/css/main.e47efeb9.css",
-    "main.js": "/wonders-travel/static/js/main.c1a4c4c6.js",
+    "main.css": "/wonders-travel/static/css/main.25cd8388.css",
+    "main.js": "/wonders-travel/static/js/main.7d007217.js",
     "index.html": "/wonders-travel/index.html",
-    "main.e47efeb9.css.map": "/wonders-travel/static/css/main.e47efeb9.css.map",
-    "main.c1a4c4c6.js.map": "/wonders-travel/static/js/main.c1a4c4c6.js.map"
+    "main.25cd8388.css.map": "/wonders-travel/static/css/main.25cd8388.css.map",
+    "main.7d007217.js.map": "/wonders-travel/static/js/main.7d007217.js.map"
   },
   "entrypoints": [
-    "static/css/main.e47efeb9.css",
-    "static/js/main.c1a4c4c6.js"
+    "static/css/main.25cd8388.css",
+    "static/js/main.7d007217.js"
   ]
 }
