@@ -9,12 +9,13 @@ import Terms from './components/Terms';
 import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
 import { BASE_URL } from './config/constants';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 
 const App = () => {
-  return (
-    <ThemeProvider>
-      <Router>
-        <div className="flex min-h-screen flex-col">
+  return (    
+      <ThemeProvider>
+        <Router>
+          <div className="flex min-h-screen flex-col">
           <Navbar />
           <main className="flex-grow">
             <Routes>
@@ -23,12 +24,13 @@ const App = () => {
               <Route path="/past-trips" element={<PastTrips />} />
               <Route path="/faq" element={<FAQ />} />
               <Route path="/terms" element={<Terms />} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </Router>
-    </ThemeProvider>
+              </Routes>
+            </main>
+            <Footer />
+            <SpeedInsights /> 
+          </div>
+        </Router>
+      </ThemeProvider>
   );
 };
 
