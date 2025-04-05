@@ -56,42 +56,42 @@ const Navbar = () => {
   }, [location]);
 
   const handleNavigation = (path, type) => {
+    setIsOpen(false); // Close mobile menu first
+    
     if (type === 'section') {
-      // For sections, first navigate to home if not there
+      // If it's a section and we're not on home page, go home first
       if (location.pathname !== '/') {
         navigate('/');
         // Wait for navigation to complete before scrolling
         setTimeout(() => {
-          const element = document.querySelector(path);
+          const element = document.getElementById(path.replace('#', ''));
           if (element) {
-            element.scrollIntoView({ 
-              behavior: 'smooth',
-              block: 'start'
-            });
-          }
-        }, 100);
-      } else {
-        // If already on home page, just scroll with a small delay
-        // This ensures the scroll works even with the mobile menu animation
-        setTimeout(() => {
-          const element = document.querySelector(path);
-          if (element) {
-            const headerOffset = 80; // Height of the fixed header
+            const headerOffset = 80;
             const elementPosition = element.getBoundingClientRect().top;
             const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
             window.scrollTo({
               top: offsetPosition,
               behavior: 'smooth'
             });
           }
-        }, 10);
+        }, 100);
+      } else {
+        // If we're already on home page, just scroll
+        const element = document.getElementById(path.replace('#', ''));
+        if (element) {
+          const headerOffset = 80;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
       }
     } else {
-      // For pages, use regular navigation
+      // For regular pages, just navigate
       navigate(path);
     }
-    setIsOpen(false);
   };
 
   const handleDestinationsClick = () => {
@@ -185,84 +185,91 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu Overlay */}
-      <div 
-        className={`fixed inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 lg:hidden ${
-          isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
-        }`}
-        onClick={() => setIsOpen(false)}
-      />
-
-      {/* Mobile Menu Panel */}
-      <div className={`
-        fixed top-0 right-0 bottom-0 w-[280px] transition-transform duration-300 ease-in-out transform lg:hidden
-        ${isOpen ? 'translate-x-0' : 'translate-x-full'}
-        ${isDarkMode ? 'bg-[#0F1C2D]' : 'bg-white'}
-        shadow-xl
-      `}>
-        {/* Mobile Menu Header */}
-        <div className={`flex items-center justify-between p-4 border-b ${
-          isDarkMode ? 'border-gray-800' : 'border-gray-200'
-        }`}>
-          <div className="flex items-center gap-2">
-            <img 
-              src={`${BASE_URL}/images/wt-logo.png`}
-              alt="Wonders.Travel Logo" 
-              className="h-8 w-8 object-contain"
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsOpen(false)}
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
             />
-            <span className={`text-lg font-bold ${
-              isDarkMode ? 'text-[#FFD700]' : 'text-[#0F1C2D]'
-            }`}>
-              Wonders.Travel
-            </span>
-          </div>
-          <button
-            onClick={() => setIsOpen(false)}
-            className={`p-2 rounded-lg transition-colors ${
-              isDarkMode 
-                ? 'text-[#FFD700] hover:bg-[#1A2B3D]' 
-                : 'text-[#0F1C2D] hover:bg-gray-100'
-            }`}
-          >
-            <FaTimes className="w-5 h-5" />
-          </button>
-        </div>
-
-        {/* Mobile Menu Content */}
-        <div className="flex flex-col h-[calc(100%-72px)]">
-          <div className="flex-1 overflow-y-auto py-4">
-            <div className="px-4 space-y-1">
-              {menuItems.map((item) => (
-                <a
-                  key={item.path}
-                  href={item.path}
-                  onClick={() => setIsOpen(false)}
-                  className={`block px-4 py-3 rounded-lg transition-colors ${
-                    isDarkMode 
-                      ? 'text-gray-200 hover:bg-[#1A2B3D] hover:text-[#FFD700]' 
-                      : 'text-gray-700 hover:bg-gray-100 hover:text-[#0F1C2D]'
-                  }`}
-                >
-                  {item.label}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Mobile Menu Footer */}
-          <div className={`p-4 border-t ${
-            isDarkMode ? 'border-gray-800' : 'border-gray-200'
-          }`}>
-            <button
-              onClick={handleDestinationsClick}
-              className="flex items-center justify-center gap-2 px-6 py-3 rounded-lg font-medium bg-[#FFD700] text-[#0F1C2D] hover:bg-[#FFD700]/90 transition-all duration-300 w-full"
+            
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'tween', duration: 0.3 }}
+              className={`fixed right-0 top-0 h-full w-[280px] z-50 ${
+                isDarkMode 
+                  ? 'bg-[#0F1C2D] border-l border-gray-800' 
+                  : 'bg-white border-l border-gray-200'
+              }`}
             >
-              <span>Explore Destinations</span>
-              <FaArrowRight className="w-4 h-4" />
-            </button>
-          </div>
-        </div>
-      </div>
+              {/* Mobile Menu Header */}
+              <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                <div className="flex items-center gap-2">
+                  <img 
+                    src={`${BASE_URL}/images/wt-logo.png`}
+                    alt="Wonders.Travel Logo" 
+                    className="h-8 w-8"
+                  />
+                  <span className={`text-lg font-bold ${
+                    isDarkMode ? 'text-[#FFD700]' : 'text-[#0F1C2D]'
+                  }`}>
+                    Wonders.Travel
+                  </span>
+                </div>
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="p-2 rounded-lg hover:bg-gray-100"
+                >
+                  <FaTimes className="w-5 h-5" />
+                </button>
+              </div>
+
+              {/* Mobile Menu Items */}
+              <div className="p-4">
+                <div className="space-y-4">
+                  {menuItems.map((item) => (
+                    <button
+                      key={item.path}
+                      onClick={() => handleNavigation(item.path, item.type)}
+                      className={`block w-full text-left px-4 py-2 rounded-lg transition-colors duration-200 ${
+                        isDarkMode 
+                          ? 'text-gray-300 hover:bg-gray-800' 
+                          : 'text-gray-600 hover:bg-gray-100'
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Theme Toggle in Mobile Menu */}
+                <div className="mt-4 px-4">
+                  <ThemeToggle />
+                </div>
+
+                {/* Book Now Button in Mobile Menu */}
+                <div className="mt-4">
+                  <button
+                    onClick={() => handleNavigation('#destinations', 'section')}
+                    className="w-full bg-[#FFD700] text-[#0F1C2D] px-4 py-3 rounded-lg font-medium 
+                      transition-all duration-300 hover:bg-[#FFD700]/90 hover:shadow-lg"
+                  >
+                    Book Now
+                  </button>
+                </div>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </nav>
   );
 };
