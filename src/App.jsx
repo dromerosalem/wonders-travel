@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import AboutPage from './components/AboutPage';
 import { BASE_URL } from './config/constants';
 import { SpeedInsights } from '@vercel/speed-insights/react';
+import { Analytics } from '@vercel/analytics/react';
 
 const App = () => {
   return (    
@@ -27,7 +28,8 @@ const App = () => {
               </Routes>
             </main>
             <Footer />
-            <SpeedInsights /> 
+            <SpeedInsights />
+            <Analytics /> 
           </div>
         </Router>
       </ThemeProvider>
