@@ -42,7 +42,7 @@ const Hero = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{ 
-            backgroundImage: `url(${BASE_URL}/images/hero-bg.png)`,
+            backgroundImage: `url(${BASE_URL}/images/hero-bg.webp)`,
           }}
         />
 
@@ -50,7 +50,7 @@ const Hero = () => {
         <div 
           className="absolute inset-0 bg-cover bg-center bg-no-repeat transition-opacity duration-[1200ms]"
           style={{ 
-            backgroundImage: `url(${BASE_URL}/images/hero-bg-light.png)`,
+            backgroundImage: `url(${BASE_URL}/images/hero-bg-light.webp)`,
             opacity: isDarkMode ? 0 : 1,
             transitionTimingFunction: 'cubic-bezier(0.4, 0, 0.2, 1)'
           }}
@@ -94,7 +94,7 @@ const Hero = () => {
       <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
         <div className="mb-8">
           <img 
-            src={`${BASE_URL}/images/logo.png`}
+            src={`${BASE_URL}/images/logo.webp`}
             alt="Wonders.Travel Logo"
             className="w-72 h-72 mx-auto"
           />
